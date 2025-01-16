@@ -12,7 +12,7 @@
 	<artifactId>FreeBoard-Profile-Spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FreeBoard-Profile-Spring</name>
-	<description>Profile micro service for FreeBoard</description>
+	<description>Profile microservice for FreeBoard</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -45,6 +45,11 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
 		<dependency>
@@ -98,18 +103,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
