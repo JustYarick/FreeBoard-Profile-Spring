@@ -16,12 +16,16 @@ import java.time.LocalDateTime;
 @Table(name = "users_info")
 public class ProfileUserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
-    private String avatarUrl;
-    private String bio;
-    private Boolean isActive;
-    private LocalDateTime createdAt;
+    private String email;
+    @Builder.Default
+    private String avatarUrl = "http://localhost:9000/avatars/standart_avatars_giraffe.jpg";
+    @Builder.Default
+    private String bio = "";
+    @Builder.Default
+    private Boolean isActive = true;
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 }
