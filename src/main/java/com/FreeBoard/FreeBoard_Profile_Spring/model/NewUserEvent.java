@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class NewUserEvent {
 
     @JsonProperty("id")
     @NotEmpty
-    private Long id;
+    private UUID user_id;
     @JsonProperty("username")
     @NotEmpty
     private String username;

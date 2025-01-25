@@ -1,5 +1,6 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.Entity;
 
+import com.FreeBoard.FreeBoard_Profile_Spring.model.MyProfileResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,9 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "users_info")
-public class ProfileUserEntity {
+public class ProfileUserEntity{
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private UUID userId;
     private String username;
     private String email;
     @Builder.Default

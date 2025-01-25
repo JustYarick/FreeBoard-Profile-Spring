@@ -43,15 +43,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         token = authHeader.substring(7);
 
         // Извлекаем email из токена
-        String userEmail = jwtService.extractUserEmail(token);
+        String user_id = jwtService.extractUserEmail(token);
 
         // Устанавливаем email в SecurityContext
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Создаем токен аутентификации с email в качестве principal
+        if (user_id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Создаем токен аутентификации с user_id в качестве principal
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userEmail,  // principal (в вашем случае - это email)
-                    null,       // credentials (отсутствуют)
-                    null        // authorities (нет ролей)
+                    user_id,
+                    null,
+                    null
             );
 
             // Устанавливаем объект аутентификации в контекст
@@ -62,4 +62,3 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

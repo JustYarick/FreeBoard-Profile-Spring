@@ -3,6 +3,7 @@ package com.FreeBoard.FreeBoard_Profile_Spring.service;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,22 @@ public class S3Service {
             return "http://localhost:9000/" + bucketName + "/" + fileName; // URL для доступа к файлу
         } catch (S3Exception e) {
             throw new RuntimeException("Error uploading file to MinIO", e);
+        }
+    }
+
+    /**
+     * Метод для удаления файла из MinIO.
+     * @param fileName имя файла в MinIO.
+     */
+    public void deleteFile(String fileName) {
+        try {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileName)
+                    .build();
+            s3Client.deleteObject(deleteObjectRequest);
+        } catch (S3Exception e) {
+            throw new RuntimeException("Error deleting file from MinIO", e);
         }
     }
 }
