@@ -2,6 +2,7 @@ package com.FreeBoard.FreeBoard_Profile_Spring.service;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.Entity.ProfileUserEntity;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.NewUserEvent;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.UpdaeInfoRequest;
 import com.FreeBoard.FreeBoard_Profile_Spring.repository.ProfileUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class UserInfoService {
 
     private final ProfileUserRepository profileUserRepository;
     private final S3Service s3Service;
+    private final SecurityService securityService;
 
     // создание нового пользователя
     public void CreateNewProfile(NewUserEvent newUserEvent) {
@@ -34,12 +36,6 @@ public class UserInfoService {
         return profileUserRepository.findByUserId(user_id);
     }
 
-    /**
-     * Метод для обновления аватара пользователя.
-     * @param user_id UUID
-     * @param file файл с новым аватаром
-     * @return URL нового аватара
-     */
     public String updateAvatar(UUID user_id, MultipartFile file) throws IOException {
         ProfileUserEntity profileUser = profileUserRepository.findByUserId(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -63,5 +59,15 @@ public class UserInfoService {
 
         // Возвращаем URL нового аватара
         return avatarUrl;
+    }
+
+    public void updateInfo(UpdaeInfoRequest updaeInfoRequest) {
+        UUID user_id = securityService.getCurrentUser();
+        ProfileUserEntity profileUser = profileUserRepository.findByUserId(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        profileUser.setUsername(updaeInfoRequest.getUsername());
+        profileUser.setBio(updaeInfoRequest.getBio());
+        profileUserRepository.save(profileUser);
     }
 }

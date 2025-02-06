@@ -1,6 +1,7 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.filter;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,9 +10,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,20 +40,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // Извлекаем токен из заголовка
         token = authHeader.substring(7);
 
-        // Извлекаем email из токена
-        String user_id = jwtService.extractUserEmail(token);
+        try {
+            String user_id = jwtService.extractUserEmail(token);
 
-        // Устанавливаем email в SecurityContext
-        if (user_id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Создаем токен аутентификации с user_id в качестве principal
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    user_id,
-                    null,
-                    null
-            );
+            if (user_id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // Создаем токен аутентификации с user_id в качестве principal
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        user_id,
+                        null,
+                        null
+                );
 
-            // Устанавливаем объект аутентификации в контекст
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Устанавливаем объект аутентификации в контекст
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+        } catch (ExpiredJwtException e) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
 
         // Продолжаем выполнение цепочки фильтров

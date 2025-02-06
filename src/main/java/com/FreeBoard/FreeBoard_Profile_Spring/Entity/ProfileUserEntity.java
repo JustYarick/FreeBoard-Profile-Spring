@@ -1,6 +1,5 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.Entity;
 
-import com.FreeBoard.FreeBoard_Profile_Spring.model.MyProfileResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

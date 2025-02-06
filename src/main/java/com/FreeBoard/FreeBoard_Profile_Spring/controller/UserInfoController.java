@@ -3,17 +3,16 @@ package com.FreeBoard.FreeBoard_Profile_Spring.controller;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.Entity.ProfileUserEntity;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.MyProfileResponse;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.UpdaeInfoRequest;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.S3Service;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.SecurityService;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.UserInfoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -41,11 +40,6 @@ public class UserInfoController {
         }
     }
 
-    /**
-     * Метод для обновления аватара пользователя.
-     * @param file файл с аватаром.
-     * @return ответ с URL нового аватара.
-     */
     @PostMapping("/updateAvatar")
     public ResponseEntity<?> updateAvatar(@RequestParam("avatar") MultipartFile file) {
         UUID user_id = securityService.getCurrentUser();
@@ -63,11 +57,13 @@ public class UserInfoController {
         return ResponseEntity.badRequest().body("Invalid user");
     }
 
-
-    @GetMapping("/demo")
-    public ResponseEntity<Map<String, String>> demo() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Hello World");
-        return ResponseEntity.ok(response);
+    @PostMapping("/updateMe")
+    public ResponseEntity<?> updateInfo(@Valid @RequestBody UpdaeInfoRequest updaeInfoRequest) {
+        try {
+            userInfoService.updateInfo(updaeInfoRequest);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
