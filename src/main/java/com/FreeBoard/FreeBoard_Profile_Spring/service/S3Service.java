@@ -1,12 +1,10 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,34 +27,23 @@ public class S3Service {
      */
     public String uploadFile(MultipartFile file, String fileName) throws IOException {
         // Преобразуем MultipartFile в InputStream
-        try (InputStream inputStream = file.getInputStream()) {
-            // Создаем запрос на загрузку файла
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(fileName) // Указываем имя файла в бакете
-                    .build();
+        InputStream inputStream = file.getInputStream();
+        // Создаем запрос на загрузку файла
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName) // Указываем имя файла в бакете
+                .build();
 
-            // Загружаем файл в MinIO
-            s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromInputStream(inputStream, file.getSize()));
-            return "http://localhost:9000/" + bucketName + "/" + fileName; // URL для доступа к файлу
-        } catch (S3Exception e) {
-            throw new RuntimeException("Error uploading file to MinIO", e);
-        }
+        // Загружаем файл в MinIO
+        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromInputStream(inputStream, file.getSize()));
+        return "http://localhost:9000/" + bucketName + "/" + fileName; // URL для доступа к файлу
     }
 
-    /**
-     * Метод для удаления файла из MinIO.
-     * @param fileName имя файла в MinIO.
-     */
     public void deleteFile(String fileName) {
-        try {
-            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(fileName)
-                    .build();
-            s3Client.deleteObject(deleteObjectRequest);
-        } catch (S3Exception e) {
-            throw new RuntimeException("Error deleting file from MinIO", e);
-        }
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+        s3Client.deleteObject(deleteObjectRequest);
     }
 }

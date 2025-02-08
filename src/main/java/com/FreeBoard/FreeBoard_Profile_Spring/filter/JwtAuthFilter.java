@@ -1,7 +1,6 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.filter;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.service.JwtService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,8 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // Извлекаем токен из заголовка
         token = authHeader.substring(7);
 
-        try {
-            String user_id = jwtService.extractUserEmail(token);
+            String user_id = jwtService.extractUserUUID(token);
 
             if (user_id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // Создаем токен аутентификации с user_id в качестве principal
@@ -54,10 +52,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 // Устанавливаем объект аутентификации в контекст
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-        } catch (ExpiredJwtException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
-        }
 
         // Продолжаем выполнение цепочки фильтров
         filterChain.doFilter(request, response);

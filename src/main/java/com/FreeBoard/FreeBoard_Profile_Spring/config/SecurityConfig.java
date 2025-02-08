@@ -1,5 +1,6 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.config;
 
+import com.FreeBoard.FreeBoard_Profile_Spring.filter.ExceptionHandlerFilter;
 import com.FreeBoard.FreeBoard_Profile_Spring.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,7 +31,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // Остальные запросы требуют авторизации
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless сессии
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавляем фильтр
+                .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthFilter, ExceptionHandlerFilter.class); // Добавляем фильтр
 
         return http.build();
     }
