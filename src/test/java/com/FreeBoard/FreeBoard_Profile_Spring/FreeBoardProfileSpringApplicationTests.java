@@ -8,6 +8,7 @@ class FreeBoardProfileSpringApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assert true;
 	}
 
 }

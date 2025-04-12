@@ -27,8 +27,6 @@ import java.util.UUID;
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
-    private final S3Service s3Service;
-    private final SecurityService securityService;
 
     @GetMapping("/me")
     public ResponseEntity<MyProfileResponse> getMe() {
