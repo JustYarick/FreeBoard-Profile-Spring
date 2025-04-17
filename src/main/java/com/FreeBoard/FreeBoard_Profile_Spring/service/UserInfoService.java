@@ -1,36 +1,63 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.service;
 
-import com.FreeBoard.FreeBoard_Profile_Spring.Entity.ProfileUserEntity;
-import com.FreeBoard.FreeBoard_Profile_Spring.model.NewUserEvent;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.ProfileCreatedEventDTO;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.ProfileFailedEventDTO;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.Entity.ProfileUserEntity;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.NewUserEventDTO;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.UpdaeInfoRequest;
 import com.FreeBoard.FreeBoard_Profile_Spring.repository.ProfileUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserInfoService {
 
     private final ProfileUserRepository profileUserRepository;
     private final S3Service s3Service;
     private final SecurityService securityService;
+    private final KafkaService kafkaService;
 
-    // создание нового пользователя
-    public void CreateNewProfile(NewUserEvent newUserEvent) {
+    public void createNewProfile(NewUserEventDTO newUserEvent) {
+        try {
+            var newUserProfile = ProfileUserEntity.builder()
+                    .userId(newUserEvent.getUserId())
+                    .email(newUserEvent.getEmail())
+                    .username(newUserEvent.getUsername())
+                    .build();
 
-        var newUserProfile = ProfileUserEntity.builder()
-                .userId(newUserEvent.getUser_id())
-                .email(newUserEvent.getEmail())
-                .username(newUserEvent.getUsername())
-                .build();
+            profileUserRepository.save(newUserProfile);
 
-        profileUserRepository.save(newUserProfile);
+            ProfileCreatedEventDTO createdEvent = ProfileCreatedEventDTO.builder()
+                    .sagaId(newUserEvent.getSagaId())
+                    .userId(newUserEvent.getUserId())
+                    .timestamp(Instant.now())
+                    .build();
+
+            kafkaService.sendProfileCreatedEvent(createdEvent);
+
+        } catch (Exception e) {
+            log.error("Error creating user profile for {}: {}", newUserEvent.getUserId(), e.getMessage());
+
+            ProfileFailedEventDTO failedEvent = ProfileFailedEventDTO.builder()
+                    .sagaId(newUserEvent.getSagaId())
+                    .userId(newUserEvent.getUserId())
+                    .error(e.getMessage())
+                    .timestamp(Instant.now())
+                    .build();
+
+            kafkaService.sendProfileFailedEvent(failedEvent);
+        }
     }
+
 
     public Optional<ProfileUserEntity> GetProfileUser(UUID user_id) {
         return profileUserRepository.findByUserId(user_id);

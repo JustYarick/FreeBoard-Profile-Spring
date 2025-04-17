@@ -8,15 +8,10 @@ import java.util.UUID;
 
 @Service
 public class SecurityService {
-    /**
-     * Получение email текущего пользователя из контекста безопасности.
-     *
-     * @return email текущего пользователя, или null, если контекст пуст.
-     */
     public static UUID getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof String) {
-            return UUID.fromString((String) authentication.getPrincipal());
+        if (authentication != null && !authentication.getName().equals("anonymousUser")) {
+            return UUID.fromString(authentication.getName());
         }
         return null;
     }

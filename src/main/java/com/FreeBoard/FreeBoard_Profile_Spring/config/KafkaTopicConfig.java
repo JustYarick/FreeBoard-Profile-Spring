@@ -7,15 +7,15 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaTopicConfig {
-//    @Bean
-//    public NewTopic NewUSerTopic() {
-//        return TopicBuilder.name("NewUser")
-//                .build();
-//    }
-//
-//    @Bean
-//    public NewTopic LoginUserTopic() {
-//        return TopicBuilder.name("LoginUser")
-//                .build();
-//    }
+    @Bean
+    public NewTopic ProfileCreateTopic() {
+        return TopicBuilder.name("profileCreated")
+                .build();
+    }
+
+    @Bean
+    public NewTopic ProfileFailTopic() {
+        return TopicBuilder.name("profileFailed")
+                .build();
+    }
 }

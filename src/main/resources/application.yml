@@ -1,8 +1,14 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:7999/realms/FreeBoard}
+          jwk-set-uri: ${KEYCLOAK_JWT_SET_URL:http://localhost:7999/realms/FreeBoard/protocol/openid-connect/certs}
   datasource:
     url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5432/users
-    username: postgres
-    password: example
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:example}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -17,3 +23,19 @@ spring:
     bootstrap-servers: ${KAFKA_SERVER_HOST:localhost}:9092
 server:
   port: ${SERVER_PORT:8081}
+minio:
+  HOST: ${MINIO_HOST:localhost}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true

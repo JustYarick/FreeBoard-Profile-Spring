@@ -1,7 +1,8 @@
-package com.FreeBoard.FreeBoard_Profile_Spring.model;
+package com.FreeBoard.FreeBoard_Profile_Spring.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +14,19 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewUserEvent {
+public class NewUserEventDTO {
 
-    @JsonProperty("id")
-    @NotEmpty
-    private UUID user_id;
-    @JsonProperty("username")
+    @NotNull
+    @JsonProperty("saga_id")
+    private UUID sagaId;
+
+    @NotNull
+    @JsonProperty("user_id")
+    private UUID userId;
+
     @NotEmpty
     private String username;
-    @JsonProperty("email")
+
     @NotEmpty
     private String email;
 }

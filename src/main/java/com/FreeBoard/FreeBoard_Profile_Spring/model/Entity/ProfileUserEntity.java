@@ -1,4 +1,4 @@
-package com.FreeBoard.FreeBoard_Profile_Spring.Entity;
+package com.FreeBoard.FreeBoard_Profile_Spring.model.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,8 +22,7 @@ public class ProfileUserEntity{
     private UUID userId;
     private String username;
     private String email;
-    @Builder.Default
-    private String avatarUrl = "http://localhost:9000/avatars/standart_avatars_giraffe.jpg";
+    private String avatarUrl;
     @Builder.Default
     private String bio = "";
     @Builder.Default

@@ -1,6 +1,6 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.controller;
 
-import com.FreeBoard.FreeBoard_Profile_Spring.model.NewUserEvent;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.NewUserEventDTO;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,7 +13,7 @@ public class KafkaListeners {
     private final UserInfoService userInfoService;
 
     @KafkaListener(topics = "NewUser", groupId = "Users")
-    void newUserRegistered(NewUserEvent newUserData) {
-        userInfoService.CreateNewProfile(newUserData);
+    void newUserRegistered(NewUserEventDTO newUserData) {
+        userInfoService.createNewProfile(newUserData);
     }
 }
