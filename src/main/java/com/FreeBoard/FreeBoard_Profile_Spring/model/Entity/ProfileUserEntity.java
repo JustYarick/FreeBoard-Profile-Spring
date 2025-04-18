@@ -20,8 +20,6 @@ public class ProfileUserEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private UUID userId;
-    private String username;
-    private String email;
     private String avatarUrl;
     @Builder.Default
     private String bio = "";

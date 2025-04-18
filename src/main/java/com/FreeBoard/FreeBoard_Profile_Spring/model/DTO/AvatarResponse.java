@@ -1,4 +1,4 @@
-package com.FreeBoard.FreeBoard_Profile_Spring.model;
+package com.FreeBoard.FreeBoard_Profile_Spring.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdaeInfoRequest {
-    private String username;
-    private String bio;
+public class AvatarResponse {
+    private String avatarUrl;
 }

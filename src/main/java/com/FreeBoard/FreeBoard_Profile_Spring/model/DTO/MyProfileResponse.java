@@ -1,4 +1,4 @@
-package com.FreeBoard.FreeBoard_Profile_Spring.model;
+package com.FreeBoard.FreeBoard_Profile_Spring.model.DTO;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.model.Entity.ProfileUserEntity;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MyProfileResponse {
-    private String username;
-    private String email;
     private String avatarUrl;
     private String bio;
     private LocalDateTime createdAt;
@@ -22,8 +20,6 @@ public class MyProfileResponse {
 
     public static MyProfileResponse convertToMyProfileResponse(ProfileUserEntity entity) {
         return MyProfileResponse.builder()
-                .username(entity.getUsername())
-                .email(entity.getEmail())
                 .avatarUrl(entity.getAvatarUrl())
                 .bio(entity.getBio())
                 .createdAt(entity.getCreatedAt())

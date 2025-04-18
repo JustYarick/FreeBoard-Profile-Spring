@@ -4,7 +4,7 @@ import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.ProfileCreatedEventDTO;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.ProfileFailedEventDTO;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.Entity.ProfileUserEntity;
 import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.NewUserEventDTO;
-import com.FreeBoard.FreeBoard_Profile_Spring.model.UpdaeInfoRequest;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.UpdaeInfoRequest;
 import com.FreeBoard.FreeBoard_Profile_Spring.repository.ProfileUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +30,6 @@ public class UserInfoService {
         try {
             var newUserProfile = ProfileUserEntity.builder()
                     .userId(newUserEvent.getUserId())
-                    .email(newUserEvent.getEmail())
-                    .username(newUserEvent.getUsername())
                     .build();
 
             profileUserRepository.save(newUserProfile);
@@ -93,7 +91,6 @@ public class UserInfoService {
         ProfileUserEntity profileUser = profileUserRepository.findByUserId(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        profileUser.setUsername(updaeInfoRequest.getUsername());
         profileUser.setBio(updaeInfoRequest.getBio());
         profileUserRepository.save(profileUser);
     }

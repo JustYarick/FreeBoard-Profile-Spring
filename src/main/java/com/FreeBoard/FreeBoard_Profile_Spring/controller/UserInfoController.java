@@ -3,9 +3,9 @@ package com.FreeBoard.FreeBoard_Profile_Spring.controller;
 
 import com.FreeBoard.FreeBoard_Profile_Spring.model.Entity.ProfileUserEntity;
 import com.FreeBoard.FreeBoard_Profile_Spring.exception.UserNotFoundException;
-import com.FreeBoard.FreeBoard_Profile_Spring.model.AvatarResponse;
-import com.FreeBoard.FreeBoard_Profile_Spring.model.MyProfileResponse;
-import com.FreeBoard.FreeBoard_Profile_Spring.model.UpdaeInfoRequest;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.AvatarResponse;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.MyProfileResponse;
+import com.FreeBoard.FreeBoard_Profile_Spring.model.DTO.UpdaeInfoRequest;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.SecurityService;
 import com.FreeBoard.FreeBoard_Profile_Spring.service.UserInfoService;
 import jakarta.validation.Valid;
