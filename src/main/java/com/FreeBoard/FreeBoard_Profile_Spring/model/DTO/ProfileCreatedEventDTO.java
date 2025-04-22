@@ -21,5 +21,6 @@ public class ProfileCreatedEventDTO {
     @NotNull
     private UUID userId;
 
-    private Instant timestamp;
+    @Builder.Default
+    private Instant timestamp = Instant.now();
 }

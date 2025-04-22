@@ -16,6 +16,8 @@ public class MinioConfig {
 
     @Value("${minio.HOST}")
     private String minioHost;
+    @Value("${minio.PORT}")
+    private String minioPort;
 
     @Bean
     public S3Client s3Client() {
@@ -23,7 +25,7 @@ public class MinioConfig {
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create("admin", "password")
                 ))
-                .endpointOverride(URI.create("http://" + minioHost + ":9000"))
+                .endpointOverride(URI.create("http://" + minioHost + ":" + minioPort))
                 .serviceConfiguration(S3Configuration.builder()
                         .pathStyleAccessEnabled(true)
                         .build())

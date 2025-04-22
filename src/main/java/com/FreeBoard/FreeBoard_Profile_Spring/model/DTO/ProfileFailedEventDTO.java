@@ -20,7 +20,9 @@ public class ProfileFailedEventDTO {
     @NotNull
     private UUID userId;
 
+    @NotNull
     private String error;
 
-    private Instant timestamp;
+    @Builder.Default
+    private Instant timestamp = Instant.now();
 }

@@ -1,6 +1,5 @@
 package com.FreeBoard.FreeBoard_Profile_Spring.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -47,19 +46,6 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(InvalidAcces.class)
     public ResponseEntity<ApiError> handleException(
             InvalidAcces e,
-            HttpServletRequest request) {
-        ApiError apiError = new ApiError(
-                request.getRequestURI(),
-                e.getMessage(),
-                HttpStatus.FORBIDDEN.value(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ApiError> handleException(
-            ExpiredJwtException e,
             HttpServletRequest request) {
         ApiError apiError = new ApiError(
                 request.getRequestURI(),

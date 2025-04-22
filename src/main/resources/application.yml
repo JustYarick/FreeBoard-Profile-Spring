@@ -25,6 +25,8 @@ server:
   port: ${SERVER_PORT:8081}
 minio:
   HOST: ${MINIO_HOST:localhost}
+  PORT: ${MINIO_PORT:9000}
+  AVATAR_BUCKET_NAME: ${MINIO_AVATAR_BUCKET_NAME:avatars}
 
 management:
   endpoints:

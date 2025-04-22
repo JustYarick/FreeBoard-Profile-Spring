@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MyProfileResponse {
+public class ProfileDTO {
     private String avatarUrl;
     private String bio;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static MyProfileResponse convertToMyProfileResponse(ProfileUserEntity entity) {
-        return MyProfileResponse.builder()
-                .avatarUrl(entity.getAvatarUrl())
+    public static ProfileDTO convert(ProfileUserEntity entity) {
+        return ProfileDTO.builder()
+                .avatarUrl(entity.getAvatarFileName())
                 .bio(entity.getBio())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())

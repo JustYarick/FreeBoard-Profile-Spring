@@ -8,13 +8,13 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
     @Bean
-    public NewTopic ProfileCreateTopic() {
+    public NewTopic profileCreateTopic() {
         return TopicBuilder.name("profileCreated")
                 .build();
     }
 
     @Bean
-    public NewTopic ProfileFailTopic() {
+    public NewTopic profileFailTopic() {
         return TopicBuilder.name("profileFailed")
                 .build();
     }
