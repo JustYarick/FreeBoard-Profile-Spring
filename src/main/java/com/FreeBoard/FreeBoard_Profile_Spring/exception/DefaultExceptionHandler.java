@@ -30,6 +30,19 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiError> handleException(
+            IllegalArgumentException e,
+            HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ApiError> handleException(
             InvalidTokenException e,
